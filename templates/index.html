@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Selection</title>
+    <script>
+        async function submitForm() {
+            var formElement = document.getElementById("carForm");
+            var formData = new FormData(formElement);
+            var response = await fetch("/", {
+                method: "POST",
+                body: new URLSearchParams(formData)
+            });
+            var data = await response.json();
+            var textarea = document.getElementById("jsonOutput");
+            textarea.value = JSON.stringify(data, null, 4) + "\\n\\n" + textarea.value;
+            alert("Submitted successfully!");
+        }
+    </script>
+</head>
+<body>
+    <h1>Car Options</h1>
+    <form id="carForm" method="post" onsubmit="event.preventDefault(); submitForm();">
+        <!-- Color Dropdown -->
+        <label for="color">Choose a color:</label>
+        <select name="color" id="color">
+            {% for car in cars %}
+            <option value="{{ car.color }}">{{ car.color }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Manufacturer Dropdown -->
+        <label for="manufacturer">Choose a manufacturer:</label>
+        <select name="manufacturer" id="manufacturer">
+            {% for manufacturer in manufacturers %}
+            <option value="{{ manufacturer.name }}">{{ manufacturer.name }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Year Dropdown -->
+        <label for="year">Choose a year:</label>
+        <select name="year" id="year">
+            {% for year in years %}
+            <option value="{{ year.year }}">{{ year.year }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Price Input -->
+        <label for="price">Enter price:</label>
+        <input type="number" id="price" name="price">
+
+ <!-- Engine Size Dropdown -->
+ <label for="engine_size">Choose engine size:</label>
+ <select name="engine_size" id="engine_size">
+     {% for size in engine_sizes %}
+     <option value="{{ size }}">{{ size }}</option>
+     {% endfor %}
+ </select>
+
+ <!-- Internal Options Checkboxes -->
+ <div>
+     <label><input type="checkbox" name="leather_seats" value="true"> Leather Seats</label>
+     <label><input type="checkbox" name="electric_windows" value="true"> Electric Windows</label>
+     <label><input type="checkbox" name="heated_seats" value="true"> Heated Seats</label>
+     <label><input type="checkbox" name="air_conditioning" value="true"> Air Conditioning</label>
+ </div>
+
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+    </form>
+
+    <textarea id="jsonOutput" readonly style="width:100%; height:200px;"></textarea>
+</body>
+</html>
+
+<!-- 
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Car Selection</title>
+    <script>
+        async function submitForm() {
+            var color = document.getElementById("color").value;
+            var manufacturer = document.getElementById("manufacturer").value;
+            var response = await fetch("/", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `color=${encodeURIComponent(color)}&manufacturer=${encodeURIComponent(manufacturer)}`
+            });
+            var data = await response.json();
+            var textarea = document.getElementById("jsonOutput");
+            textarea.value = JSON.stringify(data, null, 4) + "\\n\\n" + textarea.value;
+            alert("Submitted successfully!");
+        }
+    </script>
+</head>
+<body>
+    <h1>Car Options</h1>
+    <form id="carForm" method="post" onsubmit="event.preventDefault(); submitForm();">
+        <label for="color">Choose a color:</label>
+        <select name="color" id="color">
+            {% for car in cars %}
+            <option value="{{ car.color }}">{{ car.color }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="manufacturer">Choose a manufacturer:</label>
+        <select name="manufacturer" id="manufacturer">
+            {% for manufacturer in manufacturers %}
+            <option value="{{ manufacturer.name }}">{{ manufacturer.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+    <textarea id="jsonOutput" readonly style="width:100%; height:200px;"></textarea>
+</body>
+</html> --> 
